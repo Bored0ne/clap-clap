@@ -1,26 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import style from "./App.module.scss";
+import "semantic-ui-button/button.min.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App({onClick}) {
+    return (
+        <div className={style.container}>
+            <button onClick={onClick} className={`${style.button} ui button`}><span role={"img"} aria-label={"clap clap"}>👏👏</span></button>
+        </div>
+    );
 }
 
-export default App;
+export {App};

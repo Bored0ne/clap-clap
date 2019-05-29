@@ -1,12 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import {App} from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const swapSpacesForClapSpaces = (selection) => {
+    let regexToReplace = /(\s👏\s|\s)/g;
+    return selection.replace(regexToReplace, " 👏 ");
+};
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const swapTargetValue = (target, selection) => {
+    const newSelection = swapSpacesForClapSpaces(selection);
+    target.value = target.value.replace(selection, newSelection);
+};
+
+let target = {}, div = null;
+
+const onMouseDown = event => {
+    target = event.target;
+};
+
+function getParent(currentTarget) {
+    if (!!currentTarget && currentTarget.parentNode !== document) {
+        return currentTarget.parentNode
+    }
+    return document.body;
+}
+
+const onMouseUp = event => {
+    const selection = window.getSelection().toString();
+    const currentTarget = target;
+    const parent = getParent(currentTarget);
+
+    if (selection !== "" && currentTarget.tagName.toLowerCase() !== "button") {
+        div = document.createElement("div");
+
+        parent.appendChild(div);
+
+        ReactDOM.render(<App onClick={event => {
+            event.stopPropagation();
+            event.preventDefault();
+            swapTargetValue(currentTarget, selection);
+            div.parentNode.removeChild(div);
+        }}/>, div);
+    }
+    else {
+        if (!!div && !!div.parentNode) {
+            div.parentNode.removeChild(div);
+        }
+    }
+};
+
+window.addEventListener("mouseup", onMouseUp);
+window.addEventListener("mousedown", onMouseDown);
+ReactDOM.render(<textarea/>, document.body);
+
