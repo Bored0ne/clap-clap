@@ -1,0 +1,5 @@
+.clapify-button {
+    position: absolute;
+    transform: translate(-100%, -200%);
+    z-index: 9999;
+}
